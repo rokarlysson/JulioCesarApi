@@ -1,7 +1,0 @@
-# Prevent users to commit temporary or realtime debbuging files
-*.suo
-*.user
-_ReSharper.*
-bin
-obj
-packages
