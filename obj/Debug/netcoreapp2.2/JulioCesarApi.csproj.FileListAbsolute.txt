@@ -1,14 +1,11 @@
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\bin\Debug\netcoreapp2.2\JulioCesarApi.deps.json
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\bin\Debug\netcoreapp2.2\JulioCesarApi.runtimeconfig.json
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\bin\Debug\netcoreapp2.2\JulioCesarApi.runtimeconfig.dev.json
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\bin\Debug\netcoreapp2.2\JulioCesarApi.dll
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\bin\Debug\netcoreapp2.2\JulioCesarApi.pdb
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.csprojAssemblyReference.cache
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.csproj.CoreCompileInputs.cache
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.RazorAssemblyInfo.cache
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.RazorAssemblyInfo.cs
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.AssemblyInfoInputs.cache
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.AssemblyInfo.cs
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.RazorTargetAssemblyInfo.cache
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.dll
-C:\Users\ro_fe\OneDrive\Documentos\Visual Studio 2019\Projects\DesafioCodenation\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.pdb
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\bin\Debug\netcoreapp2.2\JulioCesarApi.deps.json
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\bin\Debug\netcoreapp2.2\JulioCesarApi.runtimeconfig.json
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\bin\Debug\netcoreapp2.2\JulioCesarApi.runtimeconfig.dev.json
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\bin\Debug\netcoreapp2.2\JulioCesarApi.dll
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\bin\Debug\netcoreapp2.2\JulioCesarApi.pdb
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.csprojAssemblyReference.cache
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.csproj.CoreCompileInputs.cache
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.AssemblyInfoInputs.cache
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.AssemblyInfo.cs
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.dll
+C:\Users\rodrigo.moura\Documents\Rodrigo\VSCodeProjects\JulioCesarApi\obj\Debug\netcoreapp2.2\JulioCesarApi.pdb
