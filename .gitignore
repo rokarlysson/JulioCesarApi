@@ -1,0 +1,13 @@
+# Prevent users to commit temporary or realtime debbuging files
+/build/
+*.suo
+*.user
+*.log
+*.tlog
+*.opensdf
+_ReSharper.*/
+bin/
+obj/
+Debug/
+Release/
+packages/
