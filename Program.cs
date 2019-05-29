@@ -43,23 +43,19 @@ namespace JulioCesarApi
         {
             Desafio obj = null;
             if (!File.Exists("answer.json"))
-            {
                 obj = JsonConvert.DeserializeObject<Desafio>(GetJson());
-            }
             else
-            {
                 obj = JsonConvert.DeserializeObject<Desafio>(System.IO.File.ReadAllText("answer.json"));
-            }
-
             return obj;
         }
+
         private static string WriteDesafioFile(Desafio obj)
         {
             var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
             System.IO.File.WriteAllText("answer.json", json);
             return json;
         }
-
+        
         private static string WriteTextoDecifrado()
         {
             var obj = JsonConvert.DeserializeObject<Desafio>(System.IO.File.ReadAllText("answer.json"));
@@ -83,29 +79,22 @@ namespace JulioCesarApi
         {
             // Compute hash from text parameter
             algo.ComputeHash(Encoding.UTF8.GetBytes(text));
-
             // Get has value in array of bytes
             var result = algo.Hash;
-
             // Return as hexadecimal string
-            return string.Join(
-                string.Empty,
-                result.Select(x => x.ToString("x2")));
+            return string.Join(string.Empty, result.Select(x => x.ToString("x2")));
         }
 
         private static string JCDecode(Desafio json, int pos)
         {
             var textoDecrypt = string.Empty;
-            /*  
-                Itera sobre o array de caracteres da string e obtendo o
-                código ASCII voltando a posição passada, descriptografando
-                o texto ignorando espaços, pontos e números
-            */
+            // Itera sobre o array de caracteres da string e obtendo o código ASCII voltando a posição passada,
+            // descriptografando o texto ignorando espaços, pontos e números
             for (int i = 0; i < json.cifrado.Length; i++)
             {
                 int codASCII = (int)json.cifrado[i];
-
                 int keyASCII = 0;
+
                 if (!char.IsLetter(json.cifrado[i]) || json.cifrado[i] == ' ' || json.cifrado[i] == '.')
                     keyASCII = codASCII;
                 else
@@ -120,7 +109,6 @@ namespace JulioCesarApi
         private static string GetJson()
         {
             var result = string.Empty;
-
             using (var client = new HttpClient())
             {
                 var uri = new Uri(baseUrl + getUrl + token);
@@ -129,21 +117,18 @@ namespace JulioCesarApi
                 response.EnsureSuccessStatusCode();
                 result = response.Content.ReadAsStringAsync().Result;
             }
-
             return result;
         }
 
         private static string PostJson()
         {
             var result = string.Empty;
-
             using (var client = new HttpClient())
             {
                 var uri = new Uri(baseUrl + postUrl + token);
                 using (var content = new MultipartFormDataContent("DesafioCN----" + DateTime.Now.ToString(System.Globalization.CultureInfo.InvariantCulture)))
                 {
                     content.Add(new StreamContent(new FileStream("answer.json", FileMode.Open)), "answer", "answer.json");
-
                     using (HttpResponseMessage response = client.PostAsync(uri, content).Result)
                     {
                         result = response.Content.ReadAsStringAsync().Result;
