@@ -10,6 +10,8 @@ using System.Security.Cryptography;
 using Newtonsoft.Json;
 using System.IO;
 using JulioCesarApi.Models;
+using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace JulioCesarApi
 {
@@ -17,7 +19,7 @@ namespace JulioCesarApi
     {
         private static readonly string token = "879f225b199ec8284cbaf5b80d7ac334f1327200";
         private static readonly string getUrl = "generate-data?token=";
-        private static readonly string postUrl = "generate-data?token=";
+        private static readonly string postUrl = "submit-solution?token=";
         private static readonly string baseUrl = "https://api.codenation.dev/v1/challenge/dev-ps/";
         /*
             {
@@ -30,22 +32,65 @@ namespace JulioCesarApi
         */
         static void Main(string[] args)
         {
-            Console.WriteLine(JsonConvert.SerializeObject(GetDesafio(), Formatting.Indented));
+            var obj = GetFileAsDesafio();
+            Console.WriteLine(WriteDesafioFile(obj));
+            Console.WriteLine(WriteTextoDecifrado());
+            Console.WriteLine(WriteResumoCripto());
+            Console.WriteLine(PostJson());
         }
 
-        private static Desafio GetDesafio()
+        private static Desafio GetFileAsDesafio()
         {
-            var value = JsonConvert.DeserializeObject<Desafio>(GetJson());
-            value.decifrado = JCDecode(value, 1);
+            Desafio obj = null;
+            if (!File.Exists("answer.json"))
+            {
+                obj = JsonConvert.DeserializeObject<Desafio>(GetJson());
+            }
+            else
+            {
+                obj = JsonConvert.DeserializeObject<Desafio>(System.IO.File.ReadAllText("answer.json"));
+            }
+
+            return obj;
+        }
+        private static string WriteDesafioFile(Desafio obj)
+        {
+            var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            System.IO.File.WriteAllText("answer.json", json);
+            return json;
+        }
+
+        private static string WriteTextoDecifrado()
+        {
+            var obj = JsonConvert.DeserializeObject<Desafio>(System.IO.File.ReadAllText("answer.json"));
+            obj.decifrado = JCDecode(obj, 1);
+            var json = WriteDesafioFile(obj);
+            return json;
+        }
+
+        private static string WriteResumoCripto()
+        {
+            var obj = JsonConvert.DeserializeObject<Desafio>(System.IO.File.ReadAllText("answer.json"));
             using (var sha1 = new SHA1Managed())
             {
-                value.resumo_criptografico = BitConverter.ToString(sha1.ComputeHash(Encoding.UTF8.GetBytes(value.decifrado)));
+                obj.resumo_criptografico = GenerateHashString(sha1, obj.decifrado);
             }
-            string json = JsonConvert.SerializeObject(value, Formatting.Indented);
-            
-            System.IO.File.WriteAllText("answer.json", json);
-            
-            return value;
+            string json = WriteDesafioFile(obj);
+            return json;
+        }
+
+        private static string GenerateHashString(HashAlgorithm algo, string text)
+        {
+            // Compute hash from text parameter
+            algo.ComputeHash(Encoding.UTF8.GetBytes(text));
+
+            // Get has value in array of bytes
+            var result = algo.Hash;
+
+            // Return as hexadecimal string
+            return string.Join(
+                string.Empty,
+                result.Select(x => x.ToString("x2")));
         }
 
         private static string JCDecode(Desafio json, int pos)
@@ -83,6 +128,53 @@ namespace JulioCesarApi
             {
                 result = response.Content.ReadAsStringAsync().Result;
             }
+            return result;
+        }
+
+        private static string PostJson()
+        {
+            var result = string.Empty;
+            var uri = baseUrl + postUrl + token;
+            // HttpClient client = new HttpClient();
+            // var jsonBytes = System.IO.File.ReadAllBytes("answer.json");
+            // // var jsonInString = JObject.Parse(System.IO.File.ReadAllText("answer.json"));
+            // var multiContent = new MultipartFormDataContent();
+            // multiContent.Add(new ByteArrayContent(jsonBytes), "file", "answer");
+            // HttpResponseMessage response = client.PostAsync(uri, multiContent).Result;
+            // // HttpResponseMessage response = client.PostAsync(uri, new StringContent(jsonInString.ToString(), Encoding.UTF8, "application/json")).Result;
+            // result = response.Content.ReadAsStringAsync().Result;
+
+            FileInfo fi = new FileInfo("answer.json");
+            byte[] fileContents = File.ReadAllBytes(fi.FullName);
+            Uri webService = new Uri(uri);
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, webService);
+            requestMessage.Headers.ExpectContinue = false;
+
+            MultipartFormDataContent multiPartContent = new MultipartFormDataContent("----Boundary");
+            ByteArrayContent byteArrayContent = new ByteArrayContent(fileContents);
+            byteArrayContent.Headers.Add("Content-Type", "application/octet-stream");
+            multiPartContent.Add(byteArrayContent, "file", "answer");
+            requestMessage.Content = multiPartContent;
+
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                Task<HttpResponseMessage> httpRequest = httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+                HttpResponseMessage httpResponse = httpRequest.Result;
+                HttpStatusCode statusCode = httpResponse.StatusCode;
+                HttpContent responseContent = httpResponse.Content;
+
+                if (responseContent != null)
+                {
+                    Task<String> stringContentsTask = responseContent.ReadAsStringAsync();
+                    result = stringContentsTask.Result;                    
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
             return result;
         }
     }
