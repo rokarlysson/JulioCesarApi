@@ -120,61 +120,36 @@ namespace JulioCesarApi
         private static string GetJson()
         {
             var result = string.Empty;
-            var uri = baseUrl + getUrl + token;
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage response = client.GetAsync(uri).Result;
-            if (response.IsSuccessStatusCode)
+
+            using (var client = new HttpClient())
             {
+                var uri = new Uri(baseUrl + getUrl + token);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync(uri).Result;
+                response.EnsureSuccessStatusCode();
                 result = response.Content.ReadAsStringAsync().Result;
             }
+
             return result;
         }
 
         private static string PostJson()
         {
             var result = string.Empty;
-            var uri = baseUrl + postUrl + token;
-            // HttpClient client = new HttpClient();
-            // var jsonBytes = System.IO.File.ReadAllBytes("answer.json");
-            // // var jsonInString = JObject.Parse(System.IO.File.ReadAllText("answer.json"));
-            // var multiContent = new MultipartFormDataContent();
-            // multiContent.Add(new ByteArrayContent(jsonBytes), "file", "answer");
-            // HttpResponseMessage response = client.PostAsync(uri, multiContent).Result;
-            // // HttpResponseMessage response = client.PostAsync(uri, new StringContent(jsonInString.ToString(), Encoding.UTF8, "application/json")).Result;
-            // result = response.Content.ReadAsStringAsync().Result;
 
-            FileInfo fi = new FileInfo("answer.json");
-            byte[] fileContents = File.ReadAllBytes(fi.FullName);
-            Uri webService = new Uri(uri);
-            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, webService);
-            requestMessage.Headers.ExpectContinue = false;
-
-            MultipartFormDataContent multiPartContent = new MultipartFormDataContent("----Boundary");
-            ByteArrayContent byteArrayContent = new ByteArrayContent(fileContents);
-            byteArrayContent.Headers.Add("Content-Type", "application/octet-stream");
-            multiPartContent.Add(byteArrayContent, "file", "answer");
-            requestMessage.Content = multiPartContent;
-
-            HttpClient httpClient = new HttpClient();
-            try
+            using (var client = new HttpClient())
             {
-                Task<HttpResponseMessage> httpRequest = httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
-                HttpResponseMessage httpResponse = httpRequest.Result;
-                HttpStatusCode statusCode = httpResponse.StatusCode;
-                HttpContent responseContent = httpResponse.Content;
-
-                if (responseContent != null)
+                var uri = new Uri(baseUrl + postUrl + token);
+                using (var content = new MultipartFormDataContent("DesafioCN----" + DateTime.Now.ToString(System.Globalization.CultureInfo.InvariantCulture)))
                 {
-                    Task<String> stringContentsTask = responseContent.ReadAsStringAsync();
-                    result = stringContentsTask.Result;                    
+                    content.Add(new StreamContent(new FileStream("answer.json", FileMode.Open)), "answer", "answer.json");
+
+                    using (HttpResponseMessage response = client.PostAsync(uri, content).Result)
+                    {
+                        result = response.Content.ReadAsStringAsync().Result;
+                    }
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
             return result;
         }
     }
