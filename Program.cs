@@ -77,11 +77,11 @@ namespace JulioCesarApi
 
         private static string GenerateHashString(HashAlgorithm algo, string text)
         {
-            // Compute hash from text parameter
+            // Computa o hash do texto baseado no algoritmo passado por parâmetro
             algo.ComputeHash(Encoding.UTF8.GetBytes(text));
-            // Get has value in array of bytes
+            // Obtem o valor em array de bytes
             var result = algo.Hash;
-            // Return as hexadecimal string
+            // Retorna uma string hexadecimal
             return string.Join(string.Empty, result.Select(x => x.ToString("x2")));
         }
 
